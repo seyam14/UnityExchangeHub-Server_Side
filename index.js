@@ -1,0 +1,14 @@
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config()
+const app = express();
+const port = process.env.PORT || 5000;
+
+
+app.get('/', (req, res) =>{
+    res.send('Online  marketing is processing')
+})
+
+app.listen(port, () =>{
+    console.log(`Online  marketing server is running on port: ${port}`);
+})
