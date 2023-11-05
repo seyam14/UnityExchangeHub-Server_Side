@@ -27,7 +27,32 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+    // jobs
+    const JobCollection = client.db('OnlineMarketingDB').collection('jobs');
+    // user
     const userCollection = client.db('OnlineMarketingDB').collection('user');
+
+    // add jobs
+    app.get('/addJobs', async (req, res) => {
+      const cursor = JobCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+  })
+
+  app.get('/addJobs/:id', async(req, res) =>{
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)}
+    const result = await JobCollection.findOne(query)
+    res.send(result)
+   })
+
+   app.post('/addJobs', async (req, res) => {
+    const newJob = req.body;
+    console.log(newJob);
+    const result = await JobCollection.insertOne(newJob);
+    res.send(result);
+})
+
 
     // user api
     app.get('/user', async (req, res) => {
@@ -42,6 +67,8 @@ async function run() {
         const result = await userCollection.insertOne(user);
         res.send(result);
     });
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -51,18 +78,6 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 app.get('/', (req, res) =>{
