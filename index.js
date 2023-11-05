@@ -53,6 +53,29 @@ async function run() {
     res.send(result);
 })
 
+//    updated work here
+app.put('/addJobs/:id', async(req, res) => {
+  const id = req.params.id;
+  const filter = {_id: new ObjectId(id)}
+  const options = { upsert: true };
+  const UpdateJob = req.body;
+
+  const job = {
+      $set: {
+          email: UpdateJob.email, 
+          jobTitle: UpdateJob.jobTitle, 
+          DeadLine: UpdateJob.DeadLine, 
+          category: UpdateJob.category, 
+         Description : UpdateJob.Description, 
+         MaximumPrice: UpdateJob.MaximumPrice, 
+          MinumumPrice: UpdateJob.MinumumPrice
+      }
+  }
+
+  const result = await JobCollection.updateOne(filter, job, options);
+  res.send(result);
+})
+
 
     // user api
     app.get('/user', async (req, res) => {
