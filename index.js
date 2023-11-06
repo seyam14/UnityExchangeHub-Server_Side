@@ -33,10 +33,27 @@ async function run() {
     const userCollection = client.db('OnlineMarketingDB').collection('user');
 
     // add jobs
-    app.get('/addJobs', async (req, res) => {
-      const cursor = JobCollection.find();
-      const result = await cursor.toArray();
+    app.post('/addJobs', async (req, res) => {
+      const newJob = req.body;
+      console.log(newJob);
+      const result = await JobCollection.insertOne(newJob);
       res.send(result);
+  })
+
+    app.get('/addJobs', async (req, res) => {
+      try{
+        const query ={};
+        if(req.query.email){
+          query.email = req.query.email;
+        }
+      const result = await JobCollection.find(query).toArray();
+      res.send(result)
+      }
+      catch(error)
+      {
+        console.log(error);
+        res.status(500).send("server error")
+      }
   })
 
   app.get('/addJobs/:id', async(req, res) =>{
@@ -45,13 +62,8 @@ async function run() {
     const result = await JobCollection.findOne(query)
     res.send(result)
    })
-
-   app.post('/addJobs', async (req, res) => {
-    const newJob = req.body;
-    console.log(newJob);
-    const result = await JobCollection.insertOne(newJob);
-    res.send(result);
-})
+  
+  
 
 //    updated work here
 app.put('/addJobs/:id', async(req, res) => {
