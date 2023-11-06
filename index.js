@@ -82,11 +82,18 @@ app.put('/addJobs/:id', async(req, res) => {
          MaximumPrice: UpdateJob.MaximumPrice, 
           MinumumPrice: UpdateJob.MinumumPrice
       }
-  }
+        }
 
-  const result = await JobCollection.updateOne(filter, job, options);
-  res.send(result);
-})
+        const result = await JobCollection.updateOne(filter, job, options);
+        res.send(result);
+      })
+      // 
+      app.delete('/addJobs/:id', async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) };
+        const result = await JobCollection.deleteOne(query);
+        res.send(result);
+    })
 
 
     // user api
