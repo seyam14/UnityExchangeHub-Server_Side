@@ -105,11 +105,16 @@ async function run() {
   })
 
   app.get('/mybids', async (req, res) => {
-    const bid = req.body;
-    console.log(bid);
-    const result = await BidCollection.insertOne(bid);
-    res.send(result);
-})
+    try {
+        // Fetch bids from your database
+        const bids = await BidCollection.find({ email: req.query.email }).toArray();
+        res.json(bids);
+    } catch (error) {
+        console.error('Error fetching bids:', error);
+        res.status(500).json({ error: 'Failed to retrieve bids' });
+    }
+});
+
 
 
     // user api
