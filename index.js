@@ -104,6 +104,13 @@ async function run() {
       res.send(result);
   })
 
+  app.get('/mybids', async (req, res) => {
+    const bid = req.body;
+    console.log(bid);
+    const result = await BidCollection.insertOne(bid);
+    res.send(result);
+})
+
 
     // user api
     app.get('/user', async (req, res) => {
