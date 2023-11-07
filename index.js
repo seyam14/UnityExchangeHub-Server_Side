@@ -29,16 +29,20 @@ async function run() {
     await client.connect();
     // jobs
     const JobCollection = client.db('OnlineMarketingDB').collection('jobs');
+    //mybids
+    const BidCollection = client.db('OnlineMarketingDB').collection('mybids');
     // user
     const userCollection = client.db('OnlineMarketingDB').collection('user');
 
     // add jobs
     app.post('/addJobs', async (req, res) => {
-      const newJob = req.body;
-      console.log(newJob);
-      const result = await JobCollection.insertOne(newJob);
+      const bids = req.body;
+      console.log(bids);
+      const result = await JobCollection.insertOne(bids);
       res.send(result);
   })
+
+  
 
     app.get('/addJobs', async (req, res) => {
       try{
@@ -63,26 +67,23 @@ async function run() {
     res.send(result)
    })
   
-  
-
-//    updated work here
-app.put('/addJobs/:id', async(req, res) => {
-  const id = req.params.id;
-  const filter = {_id: new ObjectId(id)}
-  const options = { upsert: true };
-  const UpdateJob = req.body;
-
-  const job = {
-      $set: {
-          email: UpdateJob.email, 
-          jobTitle: UpdateJob.jobTitle, 
-          DeadLine: UpdateJob.DeadLine, 
-          category: UpdateJob.category, 
-         Description : UpdateJob.Description, 
-         MaximumPrice: UpdateJob.MaximumPrice, 
-          MinumumPrice: UpdateJob.MinumumPrice
-      }
-        }
+      //    updated work here
+      app.put('/addJobs/:id', async(req, res) => {
+        const id = req.params.id;
+        const filter = {_id: new ObjectId(id)}
+        const options = { upsert: true };
+        const UpdateJob = req.body;
+        const job = {
+          $set: {
+              email: UpdateJob.email, 
+              jobTitle: UpdateJob.jobTitle, 
+              DeadLine: UpdateJob.DeadLine, 
+              category: UpdateJob.category, 
+            Description : UpdateJob.Description, 
+            MaximumPrice: UpdateJob.MaximumPrice, 
+              MinumumPrice: UpdateJob.MinumumPrice
+          }
+            }
 
         const result = await JobCollection.updateOne(filter, job, options);
         res.send(result);
@@ -94,6 +95,14 @@ app.put('/addJobs/:id', async(req, res) => {
         const result = await JobCollection.deleteOne(query);
         res.send(result);
     })
+
+    // my bids
+    app.post('/mybids', async (req, res) => {
+      const bid = req.body;
+      console.log(bid);
+      const result = await BidCollection.insertOne(bid);
+      res.send(result);
+  })
 
 
     // user api
