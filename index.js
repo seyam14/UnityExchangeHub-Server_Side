@@ -164,20 +164,7 @@ async function run() {
     const result = await BidCollection.updateOne(query, updateStatue);
     response.send(result);
   });
-  // 
-  app.get('/mybids', async (req, res) => {
-    try {
-      const query = {};
-      if (req.query.Buyeremail) {
-        query.Buyeremail = req.query.Buyeremail;
-      }
-      const result = await BidCollection.find(query).toArray();
-      res.send(result);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send("Internal Server Error");
-    }
-  });
+
   
 
 
