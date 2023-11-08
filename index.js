@@ -128,7 +128,7 @@ async function run() {
     }
   });
 
-  // update and delete
+  // update 
 
   app.patch('/mybids/:id', async(request, response) => {
     const id = request.params.id
