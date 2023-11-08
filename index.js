@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const app = express();
@@ -33,6 +34,19 @@ async function run() {
     const BidCollection = client.db('OnlineMarketingDB').collection('mybids');
     // user
     const userCollection = client.db('OnlineMarketingDB').collection('user');
+
+
+  //  auth 
+  app.post('/jwt',async(req,res)=>{
+   const user = req.body;
+   console.log(user); 
+   const token = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn: '1h'})
+   res.send(token)
+  })
+
+
+
+
 
     // add jobs
     app.post('/addJobs', async (req, res) => {
@@ -112,6 +126,33 @@ async function run() {
       console.error(error);
       res.status(500).json({ error: 'Failed to fetch bids' });
     }
+  });
+
+  // update and delete
+
+  app.patch('/mybids/:id', async(request, response) => {
+    const id = request.params.id
+    const query = { _id: new ObjectId(id) }
+  
+    const updateStatue = {
+      $set: {
+       status: request.body.status,
+      },
+    };
+    const result = await BidCollection.updateOne(query, updateStatue);
+    response.send(result);
+  });
+  app.patch('/mybids/:id', async(request, response) => {
+    const id = request.params.id
+    const query = { _id: new ObjectId(id) }
+  
+    const updateStatue = {
+      $set: {
+       status: request.body.status,
+      },
+    };
+    const result = await BidCollection.updateOne(query, updateStatue);
+    response.send(result);
   });
   
 
