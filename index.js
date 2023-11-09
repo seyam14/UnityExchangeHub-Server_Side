@@ -8,7 +8,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use (cors({
-  origin: ['https://onlinemarketing-18dc9.web.app','https://onlinemarketing-18dc9.firebaseapp.com'],
+  origin: ['https://onlinemarketing-18dc9.web.app','https://onlinemarketing-18dc9.firebaseapp.com','http://localhost:5173','https://resplendent-cascaron-645470.netlify.app'],
   Credentials:true
 }));
 app.use(express.json());
